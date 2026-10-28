@@ -182,17 +182,17 @@
     .field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
     .field-label {
       font-family: var(--f-display);
-      font-size: 13px;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
       font-weight: 700;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       color: var(--fg);
       line-height: 1.4;
     }
     .field-hint {
       font-family: var(--f-body);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--fg-dim);
-      margin-top: -4px;
+      margin-top: -2px;
       line-height: 1.4;
     }
     .field .req { color: var(--accent); margin-left: 2px; }
@@ -525,12 +525,13 @@
 
       <div class="field">
         <span class="field-label">Right now, which of these feels most true for you? <span class="req">*</span></span>
+        <p class="field-hint">Pick all that apply.</p>
         <div class="choices">
-          <label class="choice"><input type="radio" name="current_situation" value="Haggled on price" required><span>I'm getting leads, but they haggle on price every time</span></label>
-          <label class="choice"><input type="radio" name="current_situation" value="Ghosted after call" required><span>I'm getting leads, but they ghost after the first call</span></label>
-          <label class="choice"><input type="radio" name="current_situation" value="Views no inbound" required><span>My content gets views, but almost no inbound inquiries</span></label>
-          <label class="choice"><input type="radio" name="current_situation" value="Invisible" required><span>I'm invisible &mdash; not getting leads from content at all</span></label>
-          <label class="choice"><input type="radio" name="current_situation" value="Not sure" required><span>Honestly, I don't know what my biggest problem is</span></label>
+          <label class="choice"><input type="checkbox" name="current_situation" value="Haggled on price"><span>I'm getting leads, but they haggle on price every time</span></label>
+          <label class="choice"><input type="checkbox" name="current_situation" value="Ghosted after call"><span>I'm getting leads, but they ghost after the first call</span></label>
+          <label class="choice"><input type="checkbox" name="current_situation" value="Views no inbound"><span>My content gets views, but almost no inbound inquiries</span></label>
+          <label class="choice"><input type="checkbox" name="current_situation" value="Invisible"><span>I'm invisible &mdash; not getting leads from content at all</span></label>
+          <label class="choice"><input type="checkbox" name="current_situation" value="Not sure"><span>Honestly, I don't know what my biggest problem is</span></label>
         </div>
       </div>
 
@@ -632,7 +633,7 @@
           whyyou: form.whyyou.value,
           clients_notice: getRadioValue('clients_notice'),
           first_contact: getRadioValue('first_contact'),
-          current_situation: getRadioValue('current_situation'),
+          current_situation: getCheckboxValues('current_situation'),
           win: getCheckboxValues('win'),
           urgency: getRadioValue('urgency'),
           budget: getRadioValue('budget'),
@@ -641,7 +642,7 @@
 
         if (!data.name || !data.email || !data.country_code || !data.country || !data.phone ||
             !data.business || !data.whyyou ||
-            !data.clients_notice || !data.first_contact || !data.current_situation ||
+            !data.clients_notice || !data.first_contact || data.current_situation.length === 0 ||
             data.win.length === 0 || !data.urgency || !data.budget) {
           statusEl.textContent = 'Please answer every question before submitting.';
           statusEl.className = 'form-status error';
