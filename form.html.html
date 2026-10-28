@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Book a Free Assessment — The Borah Way</title>
+  <meta name="description" content="A few quick questions so I walk into the call already knowing where your brand is leaking.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg: #0E0D0B;
+      --fg: #ECE7DE;
+      --fg-dim: #8B8578;
+      --fg-faint: #3A362F;
+      --accent: #D4502A;
+      --rule: #221F1B;
+
+      --f-display: 'Space Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      --f-body: 'Space Grotesk', -apple-system, system-ui, sans-serif;
+
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    html { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--f-body);
+      font-size: 16px;
+      line-height: 1.5;
+      padding-left: max(20px, env(safe-area-inset-left, 0px));
+      padding-right: max(20px, env(safe-area-inset-right, 0px));
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      min-height: 100%;
+    }
+
+    .col-rule {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--fg);
+      opacity: 0.055;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-block: 22px;
+      border-bottom: 1px solid var(--rule);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--bg);
+    }
+    .mark {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0;
+      word-spacing: 0.35em;
+      color: var(--fg);
+      white-space: nowrap;
+      text-transform: lowercase;
+      display: inline-flex;
+      align-items: baseline;
+    }
+    .cursor {
+      display: inline-block;
+      width: 0.5em;
+      height: 0.95em;
+      background: var(--accent);
+      margin-left: 0.18em;
+      vertical-align: baseline;
+      transform: translateY(0.1em);
+      animation: cursor-blink 1.1s step-end infinite;
+    }
+    @keyframes cursor-blink {
+      0%, 50% { opacity: 1; }
+      50.01%, 100% { opacity: 0; }
+    }
+
+    .back-link {
+      font-family: var(--f-display);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: clamp(24px, 3vh, 36px);
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--fg); }
+    .back-link .arrow-l { display: inline-block; transition: transform 0.2s ease; }
+    .back-link:hover .arrow-l { transform: translateX(-3px); }
+
+    /* assessment form */
+    .form-wrap {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding-block: clamp(40px, 6vh, 72px) clamp(80px, 12vh, 140px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .form-head-block { text-align: center; margin-bottom: clamp(40px, 6vh, 64px); }
+    .eyebrow {
+      font-family: var(--f-display);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 14px;
+    }
+    .form-head {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: clamp(1.75rem, 4.6vw, 2.6rem);
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+      color: var(--fg);
+      margin: 0 0 14px 0;
+      text-wrap: balance;
+    }
+    .form-sub {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--fg-dim);
+      margin: 0 auto;
+      max-width: 46ch;
+    }
+
+    .form-section-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--f-display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: clamp(32px, 5vh, 48px) 0 clamp(20px, 2.5vh, 28px) 0;
+    }
+    .form-section-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+    .form-section-eyebrow:first-of-type { margin-top: 0; }
+
+    .lead-form {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .field-label {
+      font-family: var(--f-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--fg);
+      line-height: 1.4;
+    }
+    .field-hint {
+      font-family: var(--f-body);
+      font-size: 0.85rem;
+      color: var(--fg-dim);
+      margin-top: -4px;
+      line-height: 1.4;
+    }
+    .field .req { color: var(--accent); margin-left: 2px; }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field textarea,
+    .field select {
+      font-family: var(--f-body);
+      font-size: 1rem;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s ease;
+      width: 100%;
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus { border-color: var(--accent); }
+    .field textarea { resize: vertical; min-height: 90px; font-family: var(--f-body); }
+    .field select {
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B8578' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 10px;
+      padding-right: 36px;
+    }
+    .phone-group {
+      display: flex;
+      gap: 10px;
+    }
+    .phone-group select {
+      width: auto;
+      min-width: 140px;
+      max-width: 180px;
+      flex-shrink: 0;
+    }
+    .phone-group input {
+      flex: 1;
+      min-width: 0;
+    }
+    @media (max-width: 480px) {
+      .phone-group select { min-width: 110px; max-width: 130px; font-size: 0.9rem; padding-right: 28px; }
+    }
+
+    .choices { display: flex; flex-direction: column; gap: 8px; }
+    .choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--rule);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      font-family: var(--f-body);
+      font-size: 0.98rem;
+      color: var(--fg);
+      line-height: 1.4;
+    }
+    .choice:hover { border-color: var(--fg-dim); }
+    .choice input {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--fg-dim);
+      background: var(--bg);
+      margin: 2px 0 0 0;
+      flex-shrink: 0;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .choice input[type="radio"] { border-radius: 50%; }
+    .choice input:checked {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+    .choice input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      background: var(--bg);
+      border-radius: 50%;
+    }
+    .choice input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 5px;
+      height: 9px;
+      border-right: 2px solid var(--bg);
+      border-bottom: 2px solid var(--bg);
+      transform: rotate(45deg);
+    }
+    .choice input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .choice:has(input:checked) {
+      border-color: var(--accent);
+      background: rgba(212, 80, 42, 0.05);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 20px 36px;
+      border: 1px solid var(--fg);
+      background: transparent;
+      text-decoration: none;
+      font-family: var(--f-display);
+      font-size: clamp(13px, 1.4vw, 15px);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+      max-width: 100%;
+    }
+    .cta:hover { background: var(--fg); color: var(--bg); }
+    .cta:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+    .cta:disabled { opacity: 0.5; cursor: not-allowed; }
+    .arrow { display: inline-block; transition: transform 0.25s ease; }
+    .cta:hover .arrow { transform: translateX(4px); }
+
+    .form-submit { margin-top: 24px; width: 100%; }
+    .form-status {
+      margin: 16px 0 0 0;
+      font-family: var(--f-body);
+      font-size: 0.95rem;
+      color: var(--fg-dim);
+      min-height: 1.2em;
+      text-align: center;
+    }
+    .form-status.error { color: var(--accent); }
+
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+      padding-block: clamp(32px, 4vh, 48px);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-family: var(--f-display);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+    }
+    .site-footer a { color: var(--fg-dim); text-decoration: none; transition: color 0.2s ease; }
+    .site-footer a:hover { color: var(--accent); }
+    .footer-left { display: inline-flex; align-items: center; gap: 12px; }
+    .footer-right { display: inline-flex; align-items: center; gap: 20px; }
+
+    @media (max-width: 540px) {
+      .cta { width: 100%; padding: 18px 22px; }
+      .form-head { font-size: 1.7rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="col-rule" style="left: 8.333%"></div>
+  <div class="col-rule" style="left: 16.667%"></div>
+  <div class="col-rule" style="left: 25%"></div>
+  <div class="col-rule" style="left: 33.333%"></div>
+  <div class="col-rule" style="left: 41.667%"></div>
+  <div class="col-rule" style="left: 50%"></div>
+  <div class="col-rule" style="left: 58.333%"></div>
+  <div class="col-rule" style="left: 66.667%"></div>
+  <div class="col-rule" style="left: 75%"></div>
+  <div class="col-rule" style="left: 83.333%"></div>
+  <div class="col-rule" style="left: 91.667%"></div>
+
+  <div class="topbar">
+    <span class="mark">the borah way<span class="cursor" aria-hidden="true"></span></span>
+  </div>
+
+  <section class="form-wrap">
+    <a href="/qualify" class="back-link">
+      <span class="arrow-l" aria-hidden="true">&larr;</span>
+      <span>Back to the video</span>
+    </a>
+
+    <div class="form-head-block">
+      <span class="eyebrow">Book Your Free Assessment</span>
+      <h1 class="form-head">A few questions first.</h1>
+      <p class="form-sub">This isn't a sales form. It's so I walk into the call already knowing where your leak is &mdash; and so you don't waste it answering the obvious.</p>
+    </div>
+
+    <form id="leadForm" class="lead-form" novalidate>
+      <div class="hp-field" aria-hidden="true">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+      </div>
+
+      <!-- SECTION 1 — Who you are -->
+      <div class="form-section-eyebrow">01 &middot; Who you are</div>
+
+      <div class="field">
+        <label class="field-label" for="name">Name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" required autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">Email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="phone">Phone <span class="req">*</span></label>
+        <p class="field-hint">Pick your country, then enter your number.</p>
+        <div class="phone-group">
+          <select id="country_code" name="country_code" required aria-label="Country code">
+            <option value="+91|India" selected>&#127470;&#127475; +91</option>
+            <option value="+1|United States">&#127482;&#127480; +1</option>
+            <option value="+44|United Kingdom">&#127468;&#127463; +44</option>
+            <option value="+1|Canada">&#127464;&#127462; +1</option>
+            <option value="+61|Australia">&#127462;&#127482; +61</option>
+            <option value="+971|UAE">&#127462;&#127466; +971</option>
+            <option value="+65|Singapore">&#127480;&#127468; +65</option>
+            <option value="+966|Saudi Arabia">&#127480;&#127462; +966</option>
+            <option value="+974|Qatar">&#127478;&#127462; +974</option>
+            <option value="+965|Kuwait">&#127472;&#127484; +965</option>
+            <option value="+968|Oman">&#127476;&#127474; +968</option>
+            <option value="+973|Bahrain">&#127463;&#127469; +973</option>
+            <option value="+49|Germany">&#127465;&#127466; +49</option>
+            <option value="+33|France">&#127467;&#127479; +33</option>
+            <option value="+31|Netherlands">&#127475;&#127473; +31</option>
+            <option value="+34|Spain">&#127466;&#127480; +34</option>
+            <option value="+39|Italy">&#127470;&#127481; +39</option>
+            <option value="+41|Switzerland">&#127464;&#127469; +41</option>
+            <option value="+353|Ireland">&#127470;&#127466; +353</option>
+            <option value="+46|Sweden">&#127480;&#127466; +46</option>
+            <option value="+47|Norway">&#127475;&#127476; +47</option>
+            <option value="+45|Denmark">&#127465;&#127472; +45</option>
+            <option value="+358|Finland">&#127467;&#127470; +358</option>
+            <option value="+32|Belgium">&#127463;&#127466; +32</option>
+            <option value="+43|Austria">&#127462;&#127481; +43</option>
+            <option value="+351|Portugal">&#127477;&#127481; +351</option>
+            <option value="+64|New Zealand">&#127475;&#127487; +64</option>
+            <option value="+852|Hong Kong">&#127469;&#127472; +852</option>
+            <option value="+81|Japan">&#127471;&#127477; +81</option>
+            <option value="+82|South Korea">&#127472;&#127479; +82</option>
+            <option value="+86|China">&#127464;&#127475; +86</option>
+            <option value="+886|Taiwan">&#127481;&#127484; +886</option>
+            <option value="+66|Thailand">&#127481;&#127469; +66</option>
+            <option value="+60|Malaysia">&#127474;&#127486; +60</option>
+            <option value="+62|Indonesia">&#127470;&#127465; +62</option>
+            <option value="+63|Philippines">&#127477;&#127469; +63</option>
+            <option value="+84|Vietnam">&#127483;&#127475; +84</option>
+            <option value="+92|Pakistan">&#127477;&#127472; +92</option>
+            <option value="+880|Bangladesh">&#127463;&#127465; +880</option>
+            <option value="+94|Sri Lanka">&#127473;&#127472; +94</option>
+            <option value="+977|Nepal">&#127475;&#127477; +977</option>
+            <option value="+975|Bhutan">&#127463;&#127481; +975</option>
+            <option value="+960|Maldives">&#127474;&#127483; +960</option>
+            <option value="+27|South Africa">&#127487;&#127462; +27</option>
+            <option value="+234|Nigeria">&#127475;&#127468; +234</option>
+            <option value="+254|Kenya">&#127472;&#127466; +254</option>
+            <option value="+20|Egypt">&#127466;&#127468; +20</option>
+            <option value="+52|Mexico">&#127474;&#127485; +52</option>
+            <option value="+55|Brazil">&#127463;&#127479; +55</option>
+            <option value="+54|Argentina">&#127462;&#127479; +54</option>
+            <option value="+56|Chile">&#127464;&#127473; +56</option>
+            <option value="+57|Colombia">&#127464;&#127476; +57</option>
+            <option value="+90|Turkey">&#127481;&#127479; +90</option>
+            <option value="+972|Israel">&#127470;&#127473; +972</option>
+            <option value="+7|Russia">&#127479;&#127482; +7</option>
+          </select>
+          <input type="text" id="phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="Phone number">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="business">Business / Website <span class="req">*</span></label>
+        <p class="field-hint">Instagram handle or website &mdash; so I can see your work before we talk.</p>
+        <input type="text" id="business" name="business" required placeholder="@yourhandle or yoursite.com">
+      </div>
+
+      <!-- SECTION 2 — Where you are -->
+      <div class="form-section-eyebrow">02 &middot; Where you are</div>
+
+      <div class="field">
+        <label class="field-label" for="whyyou">If a potential client asked you right now, in one line, why you &mdash; not the next firm &mdash; what would you say? <span class="req">*</span></label>
+        <textarea id="whyyou" name="whyyou" rows="3" required placeholder="One sentence. In your own words."></textarea>
+      </div>
+
+      <div class="field">
+        <span class="field-label">Pick the ONE thing clients notice most about your brand today. <span class="req">*</span></span>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="clients_notice" value="Portfolio" required><span>The portfolio / project photos</span></label>
+          <label class="choice"><input type="radio" name="clients_notice" value="Founder" required><span>The founder (me, personally)</span></label>
+          <label class="choice"><input type="radio" name="clients_notice" value="Firm name" required><span>The firm name</span></label>
+          <label class="choice"><input type="radio" name="clients_notice" value="Nothing specific" required><span>Honestly, nothing specific &mdash; we blend in</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label">When a client reaches out from your content, who handles the first conversation? <span class="req">*</span></span>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="first_contact" value="Me always" required><span>Me, always</span></label>
+          <label class="choice"><input type="radio" name="first_contact" value="Team trained" required><span>My team, following something I taught them</span></label>
+          <label class="choice"><input type="radio" name="first_contact" value="Team untrained" required><span>My team, however they feel like it</span></label>
+          <label class="choice"><input type="radio" name="first_contact" value="No inbound yet" required><span>We don't really get inbound from content yet</span></label>
+        </div>
+      </div>
+
+      <!-- SECTION 3 — Where you want to go -->
+      <div class="form-section-eyebrow">03 &middot; Where you want to go</div>
+
+      <div class="field">
+        <span class="field-label">Right now, which of these feels most true for you? <span class="req">*</span></span>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="current_situation" value="Haggled on price" required><span>I'm getting leads, but they haggle on price every time</span></label>
+          <label class="choice"><input type="radio" name="current_situation" value="Ghosted after call" required><span>I'm getting leads, but they ghost after the first call</span></label>
+          <label class="choice"><input type="radio" name="current_situation" value="Views no inbound" required><span>My content gets views, but almost no inbound inquiries</span></label>
+          <label class="choice"><input type="radio" name="current_situation" value="Invisible" required><span>I'm invisible &mdash; not getting leads from content at all</span></label>
+          <label class="choice"><input type="radio" name="current_situation" value="Not sure" required><span>Honestly, I don't know what my biggest problem is</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label">In 90 days, what would make you say "this was worth it"? <span class="req">*</span></span>
+        <p class="field-hint">Pick up to 2.</p>
+        <div class="choices" id="winChoices">
+          <label class="choice"><input type="checkbox" name="win" value="More leads"><span>More leads coming in</span></label>
+          <label class="choice"><input type="checkbox" name="win" value="Fewer price negotiations"><span>Fewer price negotiations &mdash; they just say yes</span></label>
+          <label class="choice"><input type="checkbox" name="win" value="Clients know work beforehand"><span>Clients who already know my work before the first call</span></label>
+          <label class="choice"><input type="checkbox" name="win" value="Known for POV"><span>Being known for a point of view, not just my projects</span></label>
+          <label class="choice"><input type="checkbox" name="win" value="Team handles inbound"><span>My team handles inbound without me babysitting</span></label>
+          <label class="choice"><input type="checkbox" name="win" value="Sound different"><span>I finally sound different from every other firm</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label">How urgent is this for you? <span class="req">*</span></span>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="urgency" value="Over a year" required><span>This has been bothering me for over a year</span></label>
+          <label class="choice"><input type="radio" name="urgency" value="Few months" required><span>It's starting to hurt &mdash; need to fix it in the next few months</span></label>
+          <label class="choice"><input type="radio" name="urgency" value="Just exploring" required><span>Just exploring, not urgent</span></label>
+          <label class="choice"><input type="radio" name="urgency" value="Something just happened" required><span>Something specific just happened that made me look for help</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label">How much are you ready to invest in fixing this? <span class="req">*</span></span>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="budget" value="Under $1k" required><span>Under $1k</span></label>
+          <label class="choice"><input type="radio" name="budget" value="$1k to $3k" required><span>$1k &ndash; $3k</span></label>
+          <label class="choice"><input type="radio" name="budget" value="$3k+" required><span>$3k+</span></label>
+          <label class="choice"><input type="radio" name="budget" value="Not yet decided" required><span>Not yet decided</span></label>
+        </div>
+      </div>
+
+      <button type="submit" class="cta form-submit">
+        <span>Submit my assessment request</span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </button>
+    </form>
+
+    <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-left">
+      <span>&copy; 2026 The Borah Way</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('leadForm');
+      var statusEl = document.getElementById('formStatus');
+      if (!form) return;
+
+      // Q8: limit to 2 picks — disable the rest once two are checked
+      var winChoices = document.getElementById('winChoices');
+      if (winChoices) {
+        var winBoxes = winChoices.querySelectorAll('input[type="checkbox"]');
+        winBoxes.forEach(function (box) {
+          box.addEventListener('change', function () {
+            var checkedCount = 0;
+            winBoxes.forEach(function (b) { if (b.checked) checkedCount++; });
+            winBoxes.forEach(function (b) {
+              if (!b.checked) b.disabled = checkedCount >= 2;
+            });
+          });
+        });
+      }
+
+      function getRadioValue(name) {
+        var el = form.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.value : '';
+      }
+      function getCheckboxValues(name) {
+        var els = form.querySelectorAll('input[name="' + name + '"]:checked');
+        return Array.prototype.map.call(els, function (el) { return el.value; });
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var submitBtn = form.querySelector('.form-submit');
+
+        // Country select value is "+91|India" — split into dial code + country name
+        var ccRaw = form.country_code.value || '';
+        var ccParts = ccRaw.split('|');
+        var dialCode = ccParts[0] || '';
+        var country = ccParts[1] || '';
+
+        var data = {
+          name: form.name.value,
+          email: form.email.value,
+          country_code: dialCode,
+          country: country,
+          phone: form.phone.value,
+          business: form.business.value,
+          whyyou: form.whyyou.value,
+          clients_notice: getRadioValue('clients_notice'),
+          first_contact: getRadioValue('first_contact'),
+          current_situation: getRadioValue('current_situation'),
+          win: getCheckboxValues('win'),
+          urgency: getRadioValue('urgency'),
+          budget: getRadioValue('budget'),
+          company: form.company.value
+        };
+
+        if (!data.name || !data.email || !data.country_code || !data.country || !data.phone ||
+            !data.business || !data.whyyou ||
+            !data.clients_notice || !data.first_contact || !data.current_situation ||
+            data.win.length === 0 || !data.urgency || !data.budget) {
+          statusEl.textContent = 'Please answer every question before submitting.';
+          statusEl.className = 'form-status error';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        statusEl.textContent = 'Submitting…';
+        statusEl.className = 'form-status';
+
+        fetch('/api/submit-assessment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+          .then(function (res) {
+            return res.json().catch(function () { return {}; }).then(function (body) {
+              return { ok: res.ok, body: body };
+            });
+          })
+          .then(function (result) {
+            if (result.ok && result.body && result.body.ok) {
+              // Redirect to thanks page — both "real" leads and silent-filtered "Not yet decided" come here.
+              window.location.href = '/thanks';
+            } else {
+              statusEl.textContent = (result.body && result.body.error) || 'Something went wrong. Please try again.';
+              statusEl.className = 'form-status error';
+              submitBtn.disabled = false;
+            }
+          })
+          .catch(function () {
+            statusEl.textContent = 'Something went wrong. Please try again.';
+            statusEl.className = 'form-status error';
+            submitBtn.disabled = false;
+          });
+      });
+    })();
+  </script>
+
+</body>
+</html>
