@@ -40,14 +40,16 @@ export async function onRequestPost(context) {
   const firstContact = str(data.first_contact);
 
   // Section 3 — where they want to go
-  const currentSituation = str(data.current_situation);
+  const currentSituation = Array.isArray(data.current_situation)
+    ? data.current_situation.map(str).filter(Boolean)
+    : [];
   const win = Array.isArray(data.win) ? data.win.slice(0, 2).map(str).filter(Boolean) : [];
   const urgency = str(data.urgency);
   const budget = str(data.budget);
 
   // All required
   if (!name || !email || !countryCode || !country || !phoneRaw || !business || !whyYou ||
-      !clientsNotice || !firstContact || !currentSituation ||
+      !clientsNotice || !firstContact || currentSituation.length === 0 ||
       win.length === 0 || !urgency || !budget) {
     return json({ ok: false, error: "Please answer every question." }, 400);
   }
@@ -83,7 +85,7 @@ export async function onRequestPost(context) {
       "Why You": { rich_text: [{ text: { content: whyYou } }] },
       "Clients Notice": { select: { name: clientsNotice } },
       "First Contact": { select: { name: firstContact } },
-      "Current Situation": { select: { name: currentSituation } },
+      "Current Situation": { multi_select: currentSituation.map((s) => ({ name: s })) },
       "90-Day Win": { multi_select: win.map((w) => ({ name: w })) },
       "Urgency": { select: { name: urgency } },
       "Budget Range": { select: { name: budget } },
